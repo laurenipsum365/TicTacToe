@@ -1,6 +1,6 @@
 <h1>game.erl module</h1>
 <p>
-<h3>How to run game.erl in a distributed environment with clients playing on two separate networks.</h3>
+<h3>How to run TicTacToe game in a distributed environment with clients playing on two separate networks.</h3>
 <br>
 @assert: User has linux distribution
 <br>
