@@ -54,7 +54,7 @@ listen(Buddy, Board) ->
       {_, stop} ->
          unregister(alistener),
          io:format("stop~n", []);
-      
+            
       %% local communication
       {_, reqping} ->
          Buddy!{self(), ping},
@@ -83,42 +83,45 @@ listen(Buddy, Board) ->
 %     clients.
 %%%
 listen() ->
+   %% gen rand # to see which client will start game first
    random:seed(erlang:now()),
    Ran = (random:uniform()), 
+   if Ran < 0.5 ->
+      PlaysFirst = false;
+   true ->
+      PlaysFirst = true
+   end,
+   
+   %% initialize board
    NewBoard = new_board(),
-        if Ran < 0.5 ->
-             PlaysFirst = false;
-          true ->
-             PlaysFirst = true
-	    end,
-    receive
 
-    %% remote communication %%
-    {PID, handshake} ->
-       io:format("connected to client : ~p~n", [PID]),     
-       if PlaysFirst == true ->
-          io:format("You go first! Place token.. ~n", []);
-       true -> 
-          io:format("You go second. Wait for other player..  ~n", [])
-       end,
-       PID!{self(), ack},
-       listen(PID, NewBoard);
-    {PID, ack} ->
-       io:format("connected to client : ~p~n", [PID]),
-       if PlaysFirst == true ->
-          io:format("You go first! Place token.. ~n", []);
-       true -> 
-          io:format("You go second. Wait for other player..  ~n", [])
-       end,
-       listen(PID, NewBoard);
-
-    %% local communication %%
-    {_, reqping} ->
-      io:format("no buddy~n", []),
-      listen();
-    {_, reqstop} ->
-      io:format("stopped~n", [])
-  end.
+   receive
+      %% remote communication %%
+      {PID, handshake} ->
+         io:format("connected to client : ~p~n", [PID]),     
+         if PlaysFirst == true ->
+            io:format("You go first! Place token.. ~n", []);
+         true -> 
+            io:format("You go second. Wait for other player..  ~n", [])
+         end,
+         PID!{self(), ack},
+         listen(PID, NewBoard);
+      {PID, ack} ->
+         io:format("connected to client : ~p~n", [PID]),
+         if PlaysFirst == true ->
+             io:format("You go first! Place token.. ~n", []);
+         true -> 
+             io:format("You go second. Wait for other player..  ~n", [])
+         end,
+         listen(PID, NewBoard);
+      
+      %% local communication %%
+      {_, reqping} ->
+         io:format("no buddy~n", []),
+         listen();
+      {_, reqstop} ->
+         io:format("stopped~n", [])
+   end.
 
 %%%
 % connect can be called from a remote instance to initiate communication.
@@ -173,96 +176,96 @@ stop() ->
 %%%%%%%%%%% Tic Tac Toe Logic %%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 new_board() ->
-    {l, l, l,
-     l, l, l,
-     l, l, l}.
+   {l, l, l,
+    l, l, l,
+    l, l, l}.
 
 %%%
 % Updates board and returns new board
 %%%
 play(Who, X, Y, Board) ->
-    NewBoard = setelement((Y - 1) * 3 + X, Board, Who), 
-    NewBoard.
+   NewBoard = setelement((Y - 1) * 3 + X, Board, Who), 
+   NewBoard.
 
 %%%
 % clears terminal screen
 %%%
 clear() ->
-    io:format("\033[2J").
+   io:format("\033[2J").
 
 check(Board) ->
-    case Board of
-        {x, x, x,
-         _, _, _,
-         _, _, _} -> {victory, x};
+   case Board of
+      {x, x, x,
+       _, _, _,
+       _, _, _} -> {victory, x};
 
-        {_, _, _,
-         x, x, x,
-         _, _, _} -> {victory, x};
+      {_, _, _,
+       x, x, x,
+       _, _, _} -> {victory, x};
 
-        {_, _, _,
-         _, _, _,
-         x, x, x} -> {victory, x};
+      {_, _, _,
+       _, _, _,
+       x, x, x} -> {victory, x};
 
-        {x, _, _,
-         x, _, _,
-         x, _, _} -> {victory, x};
+      {x, _, _,
+       x, _, _,
+       x, _, _} -> {victory, x};
 
-        {_, x, _,
-         _, x, _,
-         _, x, _} -> {victory, x};
+      {_, x, _,
+       _, x, _,
+       _, x, _} -> {victory, x};
 
-        {_, _, x,
-         _, _, x,
-         _, _, x} -> {victory, x};
+      {_, _, x,
+       _, _, x,
+       _, _, x} -> {victory, x};
 
-        {x, _, _,
-         _, x, _,
-         _, _, x} -> {victory, x};
+      {x, _, _,
+       _, x, _,
+       _, _, x} -> {victory, x};
 
-        {_, _, x,
-         _, x, _,
-         x, _, _} -> {victory, x};
+      {_, _, x,
+       _, x, _,
+       x, _, _} -> {victory, x};
 
-        {o, o, o,
-         _, _, _,
-         _, _, _} -> {victory, o};
+      {o, o, o,
+       _, _, _,
+       _, _, _} -> {victory, o};
 
-        {_, _, _,
-         o, o, o,
-         _, _, _} -> {victory, o};
+      {_, _, _,
+       o, o, o,
+       _, _, _} -> {victory, o};
 
-        {_, _, _,
-         _, _, _,
-         o, o, o} -> {victory, o};
+      {_, _, _,
+       _, _, _,
+       o, o, o} -> {victory, o};
 
-        {o, _, _,
-         o, _, _,
-         o, _, _} -> {victory, o};
+      {o, _, _,
+       o, _, _,
+       o, _, _} -> {victory, o};
 
-        {_, o, _,
-         _, o, _,
-         _, o, _} -> {victory, o};
+      {_, o, _,
+       _, o, _,
+       _, o, _} -> {victory, o};
+      
+      {_, _, o,
+       _, _, o,
+       _, _, o} -> {victory, o};
+      
+      {o, _, _,
+       _, o, _,
+       _, _, o} -> {victory, o};
 
-        {_, _, o,
-         _, _, o,
-         _, _, o} -> {victory, o};
+      {_, _, o,
+       _, o, _,
+       o, _, _} -> {victory, o};
 
-        {o, _, _,
-         _, o, _,
-         _, _, o} -> {victory, o};
-
-        {_, _, o,
-         _, o, _,
-         o, _, _} -> {victory, o};
-
-        {A, B, C,
-         D, E, F,
-         G, H, I} when A =/= undefined, B =/= undefined, C =/= undefined,
+      {A, B, C,
+       D, E, F,
+       G, H, I} when A =/= undefined, B =/= undefined, C =/= undefined,
                        D =/= undefined, E =/= undefined, F =/= undefined,
                        G =/= undefined, H =/= undefined, I =/= undefined ->
-            draw;
+                draw;
 
-        _ -> ok
-    end.
+                _ -> ok
+   end.
 
