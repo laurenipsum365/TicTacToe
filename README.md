@@ -6,8 +6,6 @@
 <br>
 @assert: game.erl in on CIS moat server 
 </p>
-<br>
-
 1. Open up two terminals and ssh into moat with cis username in both terminals:<br>(This should put you on two separate vulcan servers)<br><br>
    		&nbsp;&nbsp;&nbsp;&nbsp;> ssh kbedsole@moat.cis.uab.edu<br><br>
 2. Compile game.erl module: <br>(make sure game.erl is in your current directory)<br><br>
@@ -36,12 +34,11 @@ will complete the TCP connection between the two clients: <br><br>
 6. Now you can send messages back and forth between clients using the following
 module funcions: <br><br>
 
-	&nbsp;&nbsp;&nbsp;&nbsp;communicate<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;send messages back and forth:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;<b>Send Messages Back and Forth:</b><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;black> game:tell('hello there').<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;white> game:tell('hey what's going on').<br><br>
 			
-	&nbsp;&nbsp;&nbsp;&nbsp;play coordinate on tic tac toe board:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;<b>Play Coordinate on TicTacToe Board:</b><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;black> game:playToken(x, 1, 2). <br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;white> game:playToken(o, 2, 2). <br><br>
 
