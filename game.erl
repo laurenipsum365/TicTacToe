@@ -40,7 +40,7 @@ listen(Buddy, Board) ->
       io:format("ping", []),
       Buddy!{self(), ack},
       listen(Buddy, Board);
-	{_, get_msg, Message} ->
+    {_, get_msg, Message} ->
       io:format("msg received : ~w~n", [Message]),
       Buddy!{self(), ack},
       listen(Buddy, Board);
@@ -60,11 +60,11 @@ listen(Buddy, Board) ->
       Buddy!{self(), ping},
       io:format("sendping~n", []),
       listen(Buddy, Board);
-	{_, message, Message} ->
-	  Buddy!{self(), get_msg, Message},
+    {_, message, Message} ->
+      Buddy!{self(), get_msg, Message},
       io:format("msg sent : ~w~n", [Message]),
       listen(Buddy, Board);
-	{_, place_coordinate, Who, X, Y} ->
+    {_, place_coordinate, Who, X, Y} ->
       NewBoard = play(Who, X, Y, Board),
       io:format("New board is: ~p. ~n", [NewBoard]),
       io:format("now waiting on opponent to make move...~n", []),
