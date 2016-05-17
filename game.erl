@@ -34,46 +34,46 @@ tell/1, new_board/0, play/4, check/1, clear/0]).
 % b) requests from local users, to talk to remote buddy.
 %%%
 listen(Buddy, Board) ->
-  receive
-    %% remote communication
-    {_, ping} ->
-      io:format("ping", []),
-      Buddy!{self(), ack},
-      listen(Buddy, Board);
-    {_, get_msg, Message} ->
-      io:format("msg received : ~w~n", [Message]),
-      Buddy!{self(), ack},
-      listen(Buddy, Board);
-    {_, played_coordinate, NewBoard} ->
-      io:format("New board is: ~p. ~n", [NewBoard]),
-      io:format("Your Turn! Play your move ~n", []),
-      listen(Buddy, NewBoard);
-    {_, ack} ->
-      io:format("ack : ~n", []),
-      listen(Buddy, Board);
-    {_, stop} ->
-      unregister(alistener),
-      io:format("stop~n", []);
-
-    %% local communication
-    {_, reqping} ->
-      Buddy!{self(), ping},
-      io:format("sendping~n", []),
-      listen(Buddy, Board);
-    {_, message, Message} ->
-      Buddy!{self(), get_msg, Message},
-      io:format("msg sent : ~w~n", [Message]),
-      listen(Buddy, Board);
-    {_, place_coordinate, Who, X, Y} ->
-      NewBoard = play(Who, X, Y, Board),
-      io:format("New board is: ~p. ~n", [NewBoard]),
-      io:format("now waiting on opponent to make move...~n", []),
-      Buddy!{self(), played_coordinate, NewBoard},
-      listen(Buddy, NewBoard);
-    {_, reqstop} ->
-      Buddy!{self(), stop},
-      io:format("sendstop~n", [])
-  end.
+   receive
+      %% remote communication
+      {_, ping} ->
+         io:format("ping", []),
+         Buddy!{self(), ack},
+         listen(Buddy, Board);
+      {_, get_msg, Message} ->
+         io:format("msg received : ~w~n", [Message]),
+         Buddy!{self(), ack},
+         listen(Buddy, Board);
+      {_, played_coordinate, NewBoard} ->
+         io:format("New board is: ~p. ~n", [NewBoard]),
+         io:format("Your Turn! Play your move ~n", []),
+         listen(Buddy, NewBoard);
+      {_, ack} ->
+         io:format("ack : ~n", []),
+         listen(Buddy, Board);
+      {_, stop} ->
+         unregister(alistener),
+         io:format("stop~n", []);
+      
+      %% local communication
+      {_, reqping} ->
+         Buddy!{self(), ping},
+         io:format("sendping~n", []),
+         listen(Buddy, Board);
+      {_, message, Message} ->
+         Buddy!{self(), get_msg, Message},
+         io:format("msg sent : ~w~n", [Message]),
+         listen(Buddy, Board);
+      {_, place_coordinate, Who, X, Y} ->
+         NewBoard = play(Who, X, Y, Board),
+         io:format("New board is: ~p. ~n", [NewBoard]),
+         io:format("now waiting on opponent to make move...~n", []),
+         Buddy!{self(), played_coordinate, NewBoard},
+         listen(Buddy, NewBoard);
+      {_, reqstop} ->
+         Buddy!{self(), stop},
+         io:format("sendstop~n", [])
+   end.
 
 %%%
 % - Listen waits for an initial handshake from a remote Buddy,
@@ -83,9 +83,9 @@ listen(Buddy, Board) ->
 %     clients.
 %%%
 listen() ->
-	random:seed(erlang:now()),
-    Ran = (random:uniform()), 
-    NewBoard = new_board(),
+   random:seed(erlang:now()),
+   Ran = (random:uniform()), 
+   NewBoard = new_board(),
         if Ran < 0.5 ->
              PlaysFirst = false;
           true ->
