@@ -1,7 +1,6 @@
 game.erl module
 
-- How to run game.erl in a distributed environment 
-- with clients playing on two separate networks. 
+- How to run game.erl in a distributed environment with clients playing on two separate networks. 
 
 @assert: User has linux distribution
 @assert: game.erl in on CIS moat server 
@@ -10,9 +9,9 @@ game.erl module
 	(This should put you on two separate vulcan servers)
 
 2. Compile game.erl module (make sure game.erl is in your current directory)
-    > erl
-	> c(game).
-   	> (Ctrl+Z) to exit erl
+    > erl # >
+	> c(game). # >
+   	> (Ctrl+Z) to exit erl # >
 
 3. Start a different erl instance on each server (Make sure the name matches the 
 current vulcan server you are on)
