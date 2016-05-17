@@ -1,53 +1,53 @@
-game.erl module
-
-- How to run game.erl in a distributed environment with clients playing on two separate networks. 
-
+<h1>game.erl module</h1>
+<p>
+<h3>How to run game.erl in a distributed environment with clients playing on two separate networks.</h3>
+<br>
 @assert: User has linux distribution
+<br>
 @assert: game.erl in on CIS moat server 
-1. Open up two terminals and ssh into moat with cis username in both terminals
-	> ssh kbedsole@moat.cis.uab.edu
-	(This should put you on two separate vulcan servers)
+</p>
+<br>
 
-2. Compile game.erl module (make sure game.erl is in your current directory)
-    > erl # >
-	> c(game). # >
-   	> (Ctrl+Z) to exit erl # >
-
-3. Start a different erl instance on each server (Make sure the name matches the 
-current vulcan server you are on)
-    > erl -name black@vulcan1.cis.uab.edu -setcookie XYZ
-    > erl -name white@vulcan2.cis.uab.edu -setcookie XYZ
+1. Open up two terminals and ssh into moat with cis username in both terminals:<br>(This should put you on two separate vulcan servers)<br><br>
+   		&nbsp;&nbsp;&nbsp;&nbsp;> ssh kbedsole@moat.cis.uab.edu<br><br>
+2. Compile game.erl module: <br>(make sure game.erl is in your current directory)<br><br>
+    	&nbsp;&nbsp;&nbsp;&nbsp;> erl <br>
+	    &nbsp;&nbsp;&nbsp;&nbsp;> c(game). <br>
+   		&nbsp;&nbsp;&nbsp;&nbsp;> (Ctrl+Z) to exit erl <br><br>
+3. Start a different erl instance on each server: <br> (Make sure the name matches the 
+current vulcan server you are on)<br><br>
+    	&nbsp;&nbsp;&nbsp;&nbsp;> erl -name black@vulcan1.cis.uab.edu -setcookie XYZ<br>
+    	&nbsp;&nbsp;&nbsp;&nbsp;> erl -name white@vulcan2.cis.uab.edu -setcookie XYZ<br><br>
 
 4. Now, on black@vulcan1.cis.uab.edu, you can start a new game 
-using the game.erl module.
-The black vulcan instance you created will sit and wait for a "handshake"
-or remote client to connect to him. Initiating the TCP/IP connection. 
+using the game.erl module. The black vulcan instance you created will 
+sit and wait for a "handshake" or remote client to connect to him. 
+Initiating the TCP/IP connection: <br><br>
     
-	black> game:new().
+	&nbsp;&nbsp;&nbsp;&nbsp;black> game:new().<br><br>
 
 5. On the white vulcan, connect to the remote listener (black vulcan).
 By doing so white vulcan accepts "handshake" and sends acknowledgement 
 back to black vulcan to let him know he accepted connection. This 
-will complete the TCP connection between the two clients. 
+will complete the TCP connection between the two clients: <br><br>
 
-	white> game:playWith('black@vulcan1.cis.uab.edu').
+	&nbsp;&nbsp;&nbsp;&nbsp;white> game:playWith('black@vulcan1.cis.uab.edu').<br><br>
 
 6. Now you can send messages back and forth between clients using the following
-module funcions:
+module funcions: <br><br>
 
-% communicate 
-%        - send messages back and forth:
-%             black> game:tell('hello there').
-%             white> game:tell('hey what's going on').
-%
-%         // coordinates args are 1, 2, or 3
-%        - play coordinate on tic tac toe board:
-%             black> game:playToken(x, 1, 2).
-%             white> game:playToken(o, 2, 2).
+	&nbsp;&nbsp;&nbsp;&nbsp;communicate<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;send messages back and forth:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;black> game:tell('hello there').<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;white> game:tell('hey what's going on').<br><br>
+			
+	&nbsp;&nbsp;&nbsp;&nbsp;play coordinate on tic tac toe board:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;black> game:playToken(x, 1, 2). <br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;white> game:playToken(o, 2, 2). <br><br>
 
-7. End game by using following function on one of the clients:
+7. End game by using following function on one of the clients:<br>
 
-	white> game:end().
+	&nbsp;&nbsp;&nbsp;&nbsp;white> game:end().<br>
 
 
 
